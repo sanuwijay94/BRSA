@@ -17,4 +17,4 @@ let JourneySchema = new Schema
     }
 );
 
-module.exports = mongoose. model('Journey', JoureySchema);
+module.exports = mongoose. model('Journey', JourneySchema);

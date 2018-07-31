@@ -8,7 +8,7 @@ let journeyRouteSchema = new Schema
         busRoute: {type: Schema.ObjectId, ref: 'BusRoute', required: true},
         journey: {type: Schema.ObjectId, ref: 'Journey', required: true},
         distance: {type: Number},
-        stepCount: {type: Number}
+        stopCount: {type: Number}
     }
 );
 
