@@ -5,7 +5,7 @@ const router = express.Router();
 const journeyRoute = require('../controllers/userController')
 
 
-/// JourneyRoutes ROUTES ///
+/*/// JourneyRoutes ROUTES ///
 
 // POST request for creating JourneyRoute.
 router.post('/create', journeyRoute.create);// admin
@@ -20,6 +20,6 @@ router.patch('/:id/update', journeyRoute.update);// admin
 router.get('/:id', journeyRoute.details);//admin/PM
 
 // GET request for list of all JourneyRoutes.
-router.get('/', journeyRoute.list);//admin/PM
+router.get('/', journeyRoute.list);//admin/PM*/
 
 module.exports = router;

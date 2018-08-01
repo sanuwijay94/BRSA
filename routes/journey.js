@@ -2,9 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-const journey = require('../controllers/userController')
+const journey = require('../controllers/journeyController')
 
-
+/*
 /// Journey ROUTES ///
 
 // POST request for creating Journey.
@@ -15,7 +15,7 @@ router.delete('/:id/delete', journey.delete);// admin
 
 // PATCH request to update Journey.
 router.patch('/:id/update', journey.update);// admin
-
+*/
 // GET request for one Journey.
 router.get('/:id', journey.details);//admin/PM
 
