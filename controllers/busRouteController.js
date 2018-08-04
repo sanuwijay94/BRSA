@@ -6,7 +6,7 @@ const BusRoute = require('../models/busRoute');
 // Display list of all BusRoutes
 exports.list = function (req, res)
 {
-    BusRoute.find({}, '_id routeNo distance stopCount firstStop lastStop', function (err, result)
+    BusRoute.find({}, '_id routeNo distance stops firstStop lastStop', function (err, result)
     {
         if (err)
         {
@@ -21,13 +21,13 @@ exports.list = function (req, res)
         {
             return res.status(200).json(result);
         }
-    });
+    }).populate('firstStop lastStop');
 };
 
-// Display details of a specific BusRoutes
+// Display details of a specific BusRoute
 exports.details = function (req, res)
 {
-    BusRoute.findById({'_id': req.params.id}, '_id routeNo distance stopCount firstStop lastStop', function (err, result)
+    BusRoute.findById({'_id': req.params.id}, '_id routeNo distance stops firstStop lastStop', function (err, result)
     {
         if (err)
         {
@@ -42,8 +42,9 @@ exports.details = function (req, res)
         {
             return res.status(200).json(result);
         }
-    });
+    }).populate('firstStop lastStop');
 };
+
 // Bus Route Create on POST
 exports.create = function(req, res)
 {
@@ -53,7 +54,7 @@ exports.create = function(req, res)
 
         distance: req.body.distance,
 
-        stopCount: req.body.stopCount,
+        stops: req.body.stops,
 
         firstStop: req.body.firstStop,
 
@@ -62,15 +63,15 @@ exports.create = function(req, res)
 
     const rules = {
 
-        routeNo: 'required|integer',
+        routeNo: 'required',
 
         distance: 'required|number',
 
-        stopCount: 'required|integer',
+        stops: 'required|array',
 
-        firstStop: 'required',
+        firstStop: 'required|alpha_numeric',
 
-        lastStop: 'required'
+        lastStop: 'required|alpha_numeric'
     };
 
     validate(data, rules)
@@ -83,7 +84,7 @@ exports.create = function(req, res)
 
                 distance: req.body.distance,
 
-                stopCount: req.body.stopCount,
+                stops: req.body.stops,
 
                 firstStop: req.body.firstStop,
 

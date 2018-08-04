@@ -9,11 +9,11 @@ let BusRouteSchema = new Schema
 
         distance: {type: Number, required: true},
 
-        stops: [{type: Schema.ObjectId, ref: 'BusStops', required: true}],
+        stops: [{type: Schema.ObjectId, ref: 'BusStop', required: true}],
 
-        firstStop: {type: Schema.ObjectId, ref: 'BusStops', required: true},
+        firstStop: {type: Schema.ObjectId, ref: 'BusStop', required: true},
 
-        lastStop: {type: Schema.ObjectId, ref: 'BusStops', required: true}
+        lastStop: {type: Schema.ObjectId, ref: 'BusStop', required: true}
     }
 );
 

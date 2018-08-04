@@ -72,9 +72,11 @@ exports.create = function(req, res)
 
         type: 'required|in:Admin,General',
 
-        home: 'number',
+        home: 'array',
 
-        work: 'number',
+        work: 'array',
+
+        age: 'integer',
 
         email: 'email',
 

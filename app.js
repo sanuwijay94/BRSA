@@ -18,6 +18,8 @@ let busRoute = require('./routes/busRoute');
 
 let journeyRoute = require('./routes/journey-route');
 
+let busStop = require('./routes/busStop');
+
 let app = express();
 
 
@@ -57,6 +59,8 @@ app.use('/journey', journey);
 app.use('/busRoute', busRoute);
 
 app.use('/journeyRoute', journeyRoute);
+
+app.use('/busStop', busStop);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next)

@@ -26,7 +26,7 @@ exports.list = function (req, res)
 };
 
 
-// Display details for a specific Journeys
+// Display details for a specific Journey
 exports.details = function (req, res)
 {
     Journey.findById({'_id': req.params.id}, '_id date startedAt endedAt walkingDistance user', function (err, result)

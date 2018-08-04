@@ -5,10 +5,10 @@ const router = express.Router();
 const busRoute = require('../controllers/busRouteController')
 
 //
-// /// BusRoutes ROUTES ///
-//
-// // POST request for creating BusRoutes.
-// router.post('/create', busRoute.create);// admin
+/// BusRoutes ROUTES ///
+
+// POST request for creating BusRoutes.
+router.post('/create', busRoute.create);// admin
 //
 // // DELETE request to delete BusRoutes.
 // router.delete('/:id/delete', busRoute.delete);// admin

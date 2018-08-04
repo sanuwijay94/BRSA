@@ -4,12 +4,12 @@ const router = express.Router();
 
 const journey = require('../controllers/journeyController')
 
-/*
+
 /// Journey ROUTES ///
 
 // POST request for creating Journey.
 router.post('/create', journey.create);// admin
-
+/*
 // DELETE request to delete Journey.
 router.delete('/:id/delete', journey.delete);// admin
 

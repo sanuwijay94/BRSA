@@ -206,9 +206,9 @@ function journeyCreate(cb)
     {
         date: '2017-08-06',
 
-        startedAt: '20117-08-06 16:33:05.000',
+        startedAt: '2017-08-06 16:33:05.000',
 
-        endedAt: '20117-08-06 17:55:39.000',
+        endedAt: '2017-08-06 17:55:39.000',
 
         walkingDistance: 0.5,
 
@@ -219,9 +219,9 @@ function journeyCreate(cb)
     {
         date: '2018-01-06',
 
-        startedAt: '20117-01-06 20:54:20.000',
+        startedAt: '2017-01-06 20:54:20.000',
 
-        endedAt: '20117-08-06 21:27:14.000',
+        endedAt: '2017-08-06 21:27:14.000',
 
         walkingDistance: 0.2,
 
@@ -234,7 +234,7 @@ function journeyCreate(cb)
 
         startedAt: '2018-02-26 08:04:23.000',
 
-        endedAt: '20118-02-26 10:44:53.000',
+        endedAt: '2018-02-26 10:44:53.000',
 
         walkingDistance: 1.2,
 
