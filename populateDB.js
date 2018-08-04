@@ -18,6 +18,8 @@ const Journey = require('./models/journey');
 
 const JourneyRoute = require('./models/journey-route');
 
+const BusStop = require('./models/busStop')
+
 const mongoose = require('mongoose');
 
 const mongoDB = userArgs[0];
@@ -36,15 +38,19 @@ const busRoutes = [];
 
 const journeys = [];
 
+const busStops = [];
+
 function userCreate(cb)
 {
     const user = new User(
     {
         name: 'Sanura',
 
-        home: [ 105.7879486, 21.0307869 ],
+        type: 'Admin',
 
-        work: [ 109.1279282, 11.1307769 ],
+        home: [],
+
+        work: [],
 
         age: 21,
 
@@ -58,6 +64,8 @@ function userCreate(cb)
     const user1 = new User(
     {
         name: 'Dinura',
+
+        type: 'General',
 
         home: [ 96.1822483, 20.6507869 ],
 
@@ -100,6 +108,98 @@ function userCreate(cb)
         });
     })
 }
+
+
+
+function busStopCreate(cb)
+{
+    const busStop = new BusStop(
+    {
+        name: 'Homagama',
+
+        location: [ 96.1822483, 20.6507869 ]
+    });
+
+    const busStop1 = new BusStop(
+    {
+        name: 'Pettah',
+
+        location: [ 91.1322676, 21.1303833 ]
+    });
+
+    const busStop2 = new BusStop(
+    {
+        name: 'Kottawa',
+
+        location: [ 86.1326731, 27.538432 ]
+    });
+
+    const busStop3 = new BusStop(
+    {
+        name: 'Malabe',
+
+        location: [ 71.2632672, 13.0312748 ]
+    });
+
+    busStop.save( function (err)
+    {
+        if (err)
+        {
+            cb('busStop', null);
+
+            return;
+        }
+        busStop1.save( function (err)
+        {
+            if (err)
+            {
+                cb('busStop1', null);
+
+                return;
+            }
+            busStop2.save( function (err)
+            {
+                if (err)
+                {
+                    cb('busStop2', null);
+
+                    return;
+                }
+                busStop3.save( function (err)
+                {
+                    if (err)
+                    {
+                        cb('busStop3', null);
+
+                        return;
+                    }
+                    console.log('New BusStop1: ' + busStop);
+
+                    busStops.push(busStop);
+
+                    console.log('New BusStop2: ' + busStop1);
+
+                    busStops.push(busStop1);
+
+                    console.log('New BusStop3: ' + busStop2);
+
+                    busStops.push(busStop2);
+
+                    console.log('New BusStop4: ' + busStop3);
+
+                    busStops.push(busStop3);
+
+                    cb(null, busStop)
+                });
+            });
+        });
+    })
+}
+
+
+
+
+
 function journeyCreate(cb)
 {
     const journey = new Journey(
@@ -194,11 +294,11 @@ function busRouteCreate(cb)
 
         distance: 16.4,
 
-        stopCount: 26,
+        stops: [busStops[0], busStops[1]],
 
-        firstStop: 'Homagama',
+        firstStop: busStops[0],
 
-        lastStop: 'Pettah'
+        lastStop: busStops[1]
     });
 
     const busRoute1 = new BusRoute(
@@ -207,11 +307,11 @@ function busRouteCreate(cb)
 
         distance: 8.7,
 
-        stopCount: 18,
+        stops: [busStops[2], busStops[3]],
 
-        firstStop: 'Kottawa',
+        firstStop: busStops[2],
 
-        lastStop: 'Malabe'
+        lastStop: busStops[3]
     });
 
     busRoute.save(function (err)
@@ -255,7 +355,7 @@ function journeyRouteCreate(cb)
 
         distance: 4.4,
 
-        stopCount: 8
+        stops: [busStops[0], busStops[1]]
     });
 
     const journeyRoute1 = new JourneyRoute(
@@ -266,7 +366,7 @@ function journeyRouteCreate(cb)
 
         distance: 2.4,
 
-        stopCount: 4
+        stops: [busStops[0], busStops[1]]
     });
 
     const journeyRoute2 = new JourneyRoute(
@@ -277,7 +377,7 @@ function journeyRouteCreate(cb)
 
         distance: 8.7,
 
-        stopCount: 18
+        stops: [busStops[2], busStops[3]]
     });
 
     const journeyRoute3 = new JourneyRoute(
@@ -288,7 +388,7 @@ function journeyRouteCreate(cb)
 
         distance: 5.0,
 
-        stopCount: 10
+        stops: [busStops[2], busStops[3]]
     });
 
     journeyRoute.save(function (err)
@@ -343,6 +443,8 @@ function journeyRouteCreate(cb)
 async.series(
 [
     userCreate,
+
+    busStopCreate,
 
     journeyCreate,
 

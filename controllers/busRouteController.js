@@ -44,3 +44,73 @@ exports.details = function (req, res)
         }
     });
 };
+// Bus Route Create on POST
+exports.create = function(req, res)
+{
+    const data = {
+
+        routeNo: req.body.routeNo,
+
+        distance: req.body.distance,
+
+        stopCount: req.body.stopCount,
+
+        firstStop: req.body.firstStop,
+
+        lastStop: req.body.lastStop
+    };
+
+    const rules = {
+
+        routeNo: 'required|integer',
+
+        distance: 'required|number',
+
+        stopCount: 'required|integer',
+
+        firstStop: 'required',
+
+        lastStop: 'required'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+        const busRoute = new BusRoute(
+            {
+                routeNo: req.body.routeNo,
+
+                distance: req.body.distance,
+
+                stopCount: req.body.stopCount,
+
+                firstStop: req.body.firstStop,
+
+                lastStop: req.body.lastStop
+            });
+
+        busRoute.save(function (err)
+        {
+            if (err)
+            {
+                return res.status(304).json(
+                    {
+                        message: "Unable to create BusRoute",
+
+                        error: err
+                    });
+            }
+            return res.status(201).json(
+                {
+                    message: "BusRoute Created Successfully",
+
+                    busRoute: busRoute
+                });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};

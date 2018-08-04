@@ -47,3 +47,74 @@ exports.details = function (req, res)
     })
         .populate('user');
 };
+
+// Journey Create on POST
+exports.create = function(req, res)
+{
+    const data = {
+
+        date: req.body.date,
+
+        startedAt: req.body.startedAt,
+
+        endedAt: req.body.endedAt,
+
+        walkingDistance: req.body.walkingDistance,
+
+        user: req.body.user
+    };
+
+    const rules = {
+
+        date: 'required|date',
+
+        startedAt:'required|date',
+
+        endedAt: 'required|date',
+
+        walkingDistance: 'number',
+
+        user: 'required|alpha_numeric'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+        const journey = new Journey(
+        {
+            date: req.body.date,
+
+            startedAt: req.body.startedAt,
+
+            endedAt: req.body.endedAt,
+
+            walkingDistance: req.body.walkingDistance,
+
+            user: req.body.user
+        });
+
+        journey.save(function (err)
+        {
+            if (err)
+            {
+                return res.status(304).json(
+                    {
+                        message: "Unable to create Journey",
+
+                        error: err
+                    });
+            }
+            return res.status(201).json(
+                {
+                    message: "Journey Created Successfully",
+
+                    journey: journey
+                });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};

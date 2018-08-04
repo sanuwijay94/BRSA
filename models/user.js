@@ -7,6 +7,8 @@ let UserSchema = new Schema
     {
         name: {type: String, required: true},
 
+        type: {type: String, enum:['Admin','General'], required: true},
+
         home: {type: [Number], index: { type: '2dsphere', sparse: true}},
 
         work: {type: [Number], index: { type: '2dsphere', sparse: true}},
