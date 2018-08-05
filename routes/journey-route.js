@@ -12,10 +12,10 @@ router.post('/create', journeyRoute.create);// admin
 /*
 // DELETE request to delete JourneyRoute.
 router.delete('/:id/delete', journeyRoute.delete);// admin
-
+*/
 // PATCH request to update JourneyRoute.
 router.patch('/:id/update', journeyRoute.update);// admin
-*/
+
 // GET request for one JourneyRoute.
 router.get('/:id', journeyRoute.details);//admin/PM
 

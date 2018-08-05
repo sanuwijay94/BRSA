@@ -11,11 +11,11 @@ exports.list = function (req, res)
         if (err)
         {
             return res.status(404).json(
-                {
-                    message: "Unable to get all JourneyRoutes",
+            {
+                message: "Unable to get all JourneyRoutes",
 
-                    error: err
-                });
+                error: err
+            });
         }
         else
         {
@@ -31,14 +31,14 @@ exports.details = function (req, res)
 {
     JourneyRoute.findById({'_id': req.params.id}, '_id busRoute journey distance stops', function (err, result)
     {
-        if (err)
+        if (err||!result)
         {
             return res.status(404).json(
-                {
-                    message: "Unable to get the JourneyRoute",
+            {
+                message: "Unable to get the JourneyRoute",
 
-                    error: err
-                });
+                error: err
+            });
         }
         else
         {
@@ -93,17 +93,71 @@ exports.create = function(req, res)
             if (err)
             {
                 return res.status(304).json(
-                    {
-                        message: "Unable to create JourneyRoute",
+                {
+                    message: "Unable to create JourneyRoute",
 
-                        error: err
-                    });
+                    error: err
+                });
             }
             return res.status(201).json(
                 {
                     message: "JourneyRoute Created Successfully",
 
                     journeyRoute: journeyRoute
+                });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};
+
+// JourneyRoute Update on PATCH
+exports.update = function(req, res)
+{
+    const data = {
+
+        busRoute: req.body.busRoute,
+
+        journey: req.body.journey,
+
+        distance: req.body.distance,
+
+        stops: req.body.stops,
+    };
+
+    const rules = {
+
+        busRoute: 'required|alpha_numeric',
+
+        journey: 'required|alpha_numeric',
+
+        distance: 'required|number',
+
+        stops: 'required|array'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+        JourneyRoute.findByIdAndUpdate(req.params.id, req.body, function (err, result)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                    {
+                        message: "Unable to Update JourneyRoute",
+
+                        error: err
+                    });
+            }
+            return res.status(201).json(
+                {
+                    message: "JourneyRoute Updated Successfully",
+
+                    journeyRoute: result
                 });
         });
     })

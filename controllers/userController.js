@@ -28,7 +28,7 @@ exports.list = function (req, res)
 exports.details = function(req, res)
 {
     User.findById({'_id': req.params.id}, '_id name type home work age email username password', function (err, result) {
-        if (err)
+        if (err||!result)
         {
             return res.status(404).json(
             {
@@ -124,6 +124,76 @@ exports.create = function(req, res)
                 message: "User Created Successfully",
 
                 user: user
+            });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};
+
+// User Update on PATCH
+exports.update = function(req, res)
+{
+    const data = {
+
+        name: req.body.name,
+
+        type: req.body.type,
+
+        home: req.body.home,
+
+        work: req.body.work,
+
+        age: req.body.age,
+
+        email: req.body.email,
+
+        username: req.body.username,
+
+        password: req.body.password
+    };
+
+    const rules = {
+
+        name: 'required',
+
+        type: 'required|in:Admin,General',
+
+        home: 'array',
+
+        work: 'array',
+
+        age: 'integer',
+
+        email: 'email',
+
+        username: 'required',
+
+        password: 'required|min:4|max:40'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+        User.findByIdAndUpdate(req.params.id, req.body, function (err, result)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                {
+                    message: "Unable to Update User",
+
+                    error: err
+                });
+            }
+            return res.status(201).json(
+            {
+                message: "User Updated Successfully",
+
+                user: result
             });
         });
     })

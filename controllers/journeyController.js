@@ -11,11 +11,11 @@ exports.list = function (req, res)
         if (err)
         {
             return res.status(404).json(
-                {
-                    message: "Unable to get all Journeys",
+            {
+                message: "Unable to get all Journeys",
 
-                    error: err
-                });
+                error: err
+            });
         }
         else
         {
@@ -31,14 +31,14 @@ exports.details = function (req, res)
 {
     Journey.findById({'_id': req.params.id}, '_id date startedAt endedAt walkingDistance user', function (err, result)
     {
-        if (err)
+        if (err||!result)
         {
             return res.status(404).json(
-                {
-                    message: "Unable to get the Journey",
+            {
+                message: "Unable to get the Journey",
 
-                    error: err
-                });
+                error: err
+            });
         }
         else
         {
@@ -99,18 +99,76 @@ exports.create = function(req, res)
             if (err)
             {
                 return res.status(304).json(
-                    {
-                        message: "Unable to create Journey",
+                {
+                    message: "Unable to create Journey",
 
-                        error: err
-                    });
+                    error: err
+                });
             }
             return res.status(201).json(
-                {
-                    message: "Journey Created Successfully",
+            {
+                message: "Journey Created Successfully",
 
-                    journey: journey
+                journey: journey
+            });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};
+
+// Journey Update on PATCH
+exports.update = function(req, res)
+{
+    const data = {
+
+        date: req.body.date,
+
+        startedAt: req.body.startedAt,
+
+        endedAt: req.body.endedAt,
+
+        walkingDistance: req.body.walkingDistance,
+
+        user: req.body.user
+    };
+
+    const rules = {
+
+        date: 'required|date',
+
+        startedAt:'required|date',
+
+        endedAt: 'required|date',
+
+        walkingDistance: 'number',
+
+        user: 'required|alpha_numeric'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+        Journey.findByIdAndUpdate(req.params.id, req.body, function (err, result)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                {
+                    message: "Unable to Update Journey",
+
+                    error: err
                 });
+            }
+            return res.status(201).json(
+            {
+                message: "Journey Updated Successfully",
+
+                journey: result
+            });
         });
     })
     .catch((errors) =>

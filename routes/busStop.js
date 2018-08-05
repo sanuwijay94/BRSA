@@ -14,7 +14,7 @@ router.post('/create', busStop.create);// admin
 // router.delete('/:id/delete', busStop.delete);// admin
 
 // PATCH request to update BusStop.
-// router.patch('/:id/update', busStop.update);// admin
+ router.patch('/:id/update', busStop.update);// admin
 
 // GET request for one BusStop.
 router.get('/:id', busStop.details);//admin/PM

@@ -29,14 +29,14 @@ exports.details = function (req, res)
 {
     BusStop.findById({'_id': req.params.id}, '_id name location', function (err, result)
     {
-        if (err)
+        if (err||!result)
         {
             return res.status(404).json(
-                {
-                    message: "Unable to get the Bus Stop",
+            {
+                message: "Unable to get the Bus Stop",
 
-                    error: err
-                });
+                error: err
+            });
         }
         else
         {
@@ -67,29 +67,76 @@ exports.create = function(req, res)
     .then(() =>
     {
         const busStop = new BusStop(
-            {
-                name: req.body.name,
+        {
+            name: req.body.name,
 
-                location: req.body.location
-            });
+            location: req.body.location
+        });
 
         busStop.save(function (err)
         {
             if (err)
             {
                 return res.status(304).json(
-                    {
-                        message: "Unable to create BusStop",
+                {
+                    message: "Unable to create BusStop",
 
-                        error: err
-                    });
+                    error: err
+                });
             }
             return res.status(201).json(
-                {
-                    message: "BusStop Created Successfully",
+            {
+                message: "BusStop Created Successfully",
 
-                    busStop: busStop
+                busStop: busStop
+            });
+        });
+    })
+    .catch((errors) =>
+    {
+        return res.json(errors);
+    });
+};
+
+// Bus Stop Update on PATCH
+exports.update = function(req, res)
+{
+    const data = {
+
+        name: req.body.name,
+
+        location: req.body.location
+    };
+
+    const rules = {
+
+        name: 'required',
+
+        location: 'required|array'
+    };
+
+    validate(data, rules)
+
+    .then(() =>
+    {
+
+        BusStop.findByIdAndUpdate(req.params.id, req.body, function (err, result)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                {
+                    message: "Unable to Update BusStop",
+
+                    error: err
                 });
+            }
+            return res.status(201).json(
+            {
+                message: "BusStop Updated Successfully",
+
+                busStop: result
+            });
         });
     })
     .catch((errors) =>
