@@ -2,6 +2,8 @@ const { validate } = require('indicative');
 
 const BusStop = require('../models/busStop');
 
+const busStopMiddleware = require('../middleware/busStopMiddleware');
+
 
 // Display list of all BusStops
 exports.list = function (req, res)
@@ -142,5 +144,67 @@ exports.update = function(req, res)
     .catch((errors) =>
     {
         return res.json(errors);
+    });
+};
+
+// BusStop delete on DELETE.
+exports.delete = function(req, res)
+{
+    BusStop.findByIdAndDelete(req.params.id, function (err, result)
+    {
+        if (err||!result)
+        {
+            return res.status(304).json(
+            {
+                message: "Unable to Delete BusStop",
+
+                error: err
+            });
+        }
+
+        //getting all the busRoutes of busStop with the passed busStop Id
+        busStopMiddleware.busRoutesOfBusStop(req.params.id, function(busRoutes)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                {
+                    message: "Unable to get the BusRoutes",
+
+                    error: err
+                });
+            }
+
+            //delete the busStop Id from all the busRoutes
+            for(let i=0; i<busRoutes.length; i++)
+            {
+                busStopMiddleware.deleteBusStopFromBusRoute(busRoutes[i], req.params.id);
+            }
+        });
+
+        //getting all the journeyRoutes of busStop with the passed busStop Id
+        busStopMiddleware.journeyRoutesOfBusStop(req.params.id, function(journeyRoutes)
+        {
+            if (err||!result)
+            {
+                return res.status(304).json(
+                {
+                    message: "Unable to get the JourneyRoutes",
+
+                    error: err
+                });
+            }
+
+            //delete the busStop Id from all the journeyRoutes
+            for(let i=0; i<journeyRoutes.length; i++)
+            {
+                busStopMiddleware.deleteBusStopFromJourneyRoute(journeyRoutes[i], req.params.id);
+            }
+
+            return res.status(200).json(
+            {
+                message: "Deleted Successfully",
+            });
+        });
     });
 };

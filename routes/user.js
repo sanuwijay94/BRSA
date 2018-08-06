@@ -10,10 +10,9 @@ const user = require('../controllers/userController')
 // POST request for creating User.
 router.post('/create', user.create);// admin
 
-/*
 // DELETE request to delete User.
 router.delete('/:id/delete', user.delete);// admin
-*/
+
 // PATCH request to update User.
 router.patch('/:id/update', user.update);// admin
 

@@ -11,7 +11,7 @@ const busStop = require('../controllers/busStopController')
 router.post('/create', busStop.create);// admin
 
 // DELETE request to delete BusStop.
-// router.delete('/:id/delete', busStop.delete);// admin
+ router.delete('/:id/delete', busStop.delete);// admin
 
 // PATCH request to update BusStop.
  router.patch('/:id/update', busStop.update);// admin

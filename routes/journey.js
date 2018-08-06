@@ -9,10 +9,10 @@ const journey = require('../controllers/journeyController')
 
 // POST request for creating Journey.
 router.post('/create', journey.create);// admin
-/*
+
 // DELETE request to delete Journey.
 router.delete('/:id/delete', journey.delete);// admin
-*/
+
 // PATCH request to update Journey.
 router.patch('/:id/update', journey.update);// admin
 

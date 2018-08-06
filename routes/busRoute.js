@@ -11,7 +11,7 @@ const busRoute = require('../controllers/busRouteController')
 router.post('/create', busRoute.create);// admin
 
 // // DELETE request to delete BusRoutes.
-// router.delete('/:id/delete', busRoute.delete);// admin
+router.delete('/:id/delete', busRoute.delete);// admin
 
 // PATCH request to update BusRoutes.
 router.patch('/:id/update', busRoute.update);// admin

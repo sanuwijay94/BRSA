@@ -2,6 +2,9 @@ const { validate } = require('indicative');
 
 const BusRoute = require('../models/busRoute');
 
+const busRouteMiddleware = require('../middleware/busRouteMiddleware');
+
+const JourneyRoute = require('../models/journey-route');
 
 // Display list of all BusRoutes
 exports.list = function (req, res)
@@ -171,5 +174,62 @@ exports.update = function(req, res)
     .catch((errors) =>
     {
         return res.json(errors);
+    });
+};
+
+// BusRoute delete on DELETE.
+exports.delete = function(req, res)
+{
+    BusRoute.findByIdAndDelete(req.params.id, function (err, result)
+    {
+        if (err||!result)
+        {
+            return res.status(304).json(
+            {
+                message: "Unable to Delete BusRoute",
+
+                error: err
+            });
+        }
+
+        else
+        {
+            //getting all the journeyRoute of busRoute with the passed busRoute Id
+            busRouteMiddleware.journeyRoutesOfBusRoute(req.params.id, function(journeyRoutes)
+            {
+                if (err||!result)
+                {
+                    return res.status(304).json(
+                    {
+                        message: "Unable to Get JourneyRoute",
+
+                        error: err
+                    });
+                }
+
+                //delete the busRoute Id from all the project
+                for(let i=0; i<journeyRoutes.length; i++)
+                {
+                    JourneyRoute.findByIdAndUpdate(journeyRoutes[i], {$set: {'busRoute': null}}, function (err, result)
+                    {
+                        if (err||!result)
+                        {
+                            return res.status(304).json(
+                            {
+                                message: "Unable to Update JourneyRoute",
+
+                                error: err
+                            });
+                        }
+                    })
+                }
+            });
+            return res.status(200).json(
+            {
+                message: "Deleted Successfully",
+
+                result: result
+            });
+        }
     });
 };

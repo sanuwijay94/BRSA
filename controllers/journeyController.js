@@ -2,6 +2,8 @@ const { validate } = require('indicative');
 
 const Journey = require('../models/journey');
 
+const JourneyRoute = require('../models/journey-route')
+
 
 // Display list of all Journeys
 exports.list = function (req, res)
@@ -174,5 +176,45 @@ exports.update = function(req, res)
     .catch((errors) =>
     {
         return res.json(errors);
+    });
+};
+
+// Journey delete on DELETE.
+exports.delete = function(req, res)
+{
+    Journey.findByIdAndDelete(req.params.id, function (err, result)
+    {
+        if (err||!result)
+        {
+            return res.status(304).json(
+            {
+                message: "Unable to Delete Journey",
+
+                error: err
+            });
+        }
+
+        else
+        {
+            // delete all the JourneyRoutes of the Journey specified by the Journey ID passed
+            JourneyRoute.deleteMany({'journey': req.params.id}, function (err, result)
+            {
+                if (err||!result)
+                {
+                    return res.status(304).json(
+                    {
+                        message: "Unable to Delete JourneyRoute",
+
+                        error: err
+                    });
+                }
+            });
+            return res.status(200).json(
+            {
+                message: "Deleted Successfully",
+
+                result: result
+            });
+        }
     });
 };

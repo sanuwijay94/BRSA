@@ -166,3 +166,29 @@ exports.update = function(req, res)
         return res.json(errors);
     });
 };
+
+// JourneyRoute delete on DELETE.
+exports.delete = function(req, res)
+{
+    JourneyRoute.findByIdAndDelete(req.params.id, function (err, result)
+    {
+        if (err||!result)
+        {
+            return res.status(304).json(
+            {
+                message: "Unable to Delete JourneyRoute",
+
+                error: err
+            });
+        }
+        else
+        {
+            return res.status(200).json(
+            {
+                message: "Deleted Successfully",
+
+                result: result
+            });
+        }
+    });
+};

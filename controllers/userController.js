@@ -2,6 +2,11 @@ const { validate } = require('indicative');
 
 const User = require('../models/user');
 
+const Journey = require('../models/journey');
+
+const JourneyRoute = require('../models/journey-route');
+
+const userMiddleware = require('../middleware/userMiddleware');
 
 // Display list of all Users
 exports.list = function (req, res)
@@ -200,5 +205,69 @@ exports.update = function(req, res)
     .catch((errors) =>
     {
         return res.json(errors);
+    });
+};
+
+// User delete on DELETE.
+exports.delete = function(req, res)
+{
+    //Delete User by id passed as params
+    User.findByIdAndDelete(req.params.id, function (err, result)
+    {
+        if (err||!result)
+        {
+            return res.status(304).json(
+            {
+                message: "Unable to Delete User",
+
+                error: err
+            });
+        }
+        else
+        {
+            //getting all the journeys of user by passing user Id
+            userMiddleware.journeysOfUser(req.params.id, function(journeys) {
+
+                //delete all the journeys of user specified by the passed user Id
+                Journey.deleteMany({'user': req.params.id}, function (err, result)
+                {
+                    if (err||!result)
+                    {
+                        return res.status.json(304)(
+                        {
+                            message: "Unable to Delete Journey",
+
+                            error: err
+                        });
+                    }
+
+                    else
+                    {
+                        //Delete all the journeyRoutes of each Journey
+                        for (let j = 0; j < journeys.length; j++)
+                        {
+                             JourneyRoute.deleteMany({'journey': journeys[j]}, function (err, result)
+                             {
+                                if (err||!result)
+                                {
+                                    return res.status.json(304)(
+                                    {
+                                        message: "Unable to Delete JourneyRoutes",
+
+                                        error: err
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
+                return res.status(200).json(
+                {
+                    message: "Deleted Successfully",
+
+                    result: result
+                });
+            });
+        }
     });
 };
