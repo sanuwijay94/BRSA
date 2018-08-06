@@ -10,6 +10,8 @@ const logger = require('morgan');
 
 const bodyParser = require('body-parser');
 
+let login = require('./routes/login');
+
 let user = require('./routes/user');
 
 let journey = require('./routes/journey');
@@ -51,6 +53,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/login', login);
 
 app.use('/user', user);
 
