@@ -13,7 +13,13 @@ let BusRouteSchema = new Schema
 
         firstStop: {type: Schema.ObjectId, ref: 'BusStop', required: true},
 
-        lastStop: {type: Schema.ObjectId, ref: 'BusStop', required: true}
+        lastStop: {type: Schema.ObjectId, ref: 'BusStop', required: true},
+
+        avgExtraTime:{type: Number, required: true},
+
+        mainStops:[{type: Schema.ObjectId, ref: 'BusStop'}],
+
+        mainExtraTimes:[{type: Number}]
     }
 );
 

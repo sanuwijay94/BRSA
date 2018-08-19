@@ -298,7 +298,13 @@ function busRouteCreate(cb)
 
         firstStop: busStops[0],
 
-        lastStop: busStops[1]
+        lastStop: busStops[1],
+
+        avgExtraTime: 0.5,
+
+        mainStops:[],
+
+        mainExtraTimes:[]
     });
 
     const busRoute1 = new BusRoute(
@@ -311,7 +317,13 @@ function busRouteCreate(cb)
 
         firstStop: busStops[2],
 
-        lastStop: busStops[3]
+        lastStop: busStops[3],
+
+        avgExtraTime: 0.36,
+
+        mainStops:[busStops[2]],
+
+        mainExtraTimes:[4.73]
     });
 
     busRoute.save(function (err)

@@ -9,7 +9,7 @@ const JourneyRoute = require('../models/journey-route');
 // Display list of all BusRoutes
 exports.list = function (req, res)
 {
-    BusRoute.find({}, '_id routeNo distance stops firstStop lastStop', function (err, result)
+    BusRoute.find({}, '_id routeNo distance stops firstStop lastStop avgExtraTime mainStops mainExtraTimes', function (err, result)
     {
         if (err)
         {
@@ -30,7 +30,7 @@ exports.list = function (req, res)
 // Display details of a specific BusRoute
 exports.details = function (req, res)
 {
-    BusRoute.findById({'_id': req.params.id}, '_id routeNo distance stops firstStop lastStop', function (err, result)
+    BusRoute.findById({'_id': req.params.id}, '_id routeNo distance stops firstStop lastStop avgExtraTime mainStops mainExtraTimes', function (err, result)
     {
         if (err||!result)
         {
@@ -61,7 +61,13 @@ exports.create = function(req, res)
 
         firstStop: req.body.firstStop,
 
-        lastStop: req.body.lastStop
+        lastStop: req.body.lastStop,
+
+        avgExtraTime: req.body.avgExtraTime,
+
+        mainStops: req.body.mainStops,
+
+        mainExtraTimes: req.body.mainExtraTimes
     };
 
     const rules = {
@@ -74,7 +80,13 @@ exports.create = function(req, res)
 
         firstStop: 'required|alpha_numeric',
 
-        lastStop: 'required|alpha_numeric'
+        lastStop: 'required|alpha_numeric',
+
+        avgExtraTime: 'required|number',
+
+        mainStops: 'array',
+
+        mainExtraTimes: 'array'
     };
 
     validate(data, rules)
@@ -91,7 +103,13 @@ exports.create = function(req, res)
 
             firstStop: req.body.firstStop,
 
-            lastStop: req.body.lastStop
+            lastStop: req.body.lastStop,
+
+            avgExtraTime: req.body.avgExtraTime,
+
+            mainStops: req.body.mainStops,
+
+            mainExtraTimes: req.body.mainExtraTimes
         });
 
         busRoute.save(function (err)
@@ -132,7 +150,13 @@ exports.update = function(req, res)
 
         firstStop: req.body.firstStop,
 
-        lastStop: req.body.lastStop
+        lastStop: req.body.lastStop,
+
+        avgExtraTime: req.body.avgExtraTime,
+
+        mainStops: req.body.mainStops,
+
+        mainExtraTimes: req.body.mainExtraTimes
     };
 
     const rules = {
@@ -145,7 +169,13 @@ exports.update = function(req, res)
 
         firstStop: 'required|alpha_numeric',
 
-        lastStop: 'required|alpha_numeric'
+        lastStop: 'required|alpha_numeric',
+
+        avgExtraTime: 'required|number',
+
+        mainStops: 'array',
+
+        mainExtraTimes: 'array'
     };
 
     validate(data, rules)
